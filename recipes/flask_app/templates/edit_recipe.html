@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Above is how we link our style sheet. url_for creates a url based on the static folder, and file name given -->
+    <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+    <!-- Above is how we link our JS file. Make sure that you understand why we use defer -->
+    <title>Recipe Share</title>
+</head>
+<body>
+    <div>
+        <h1>Edit Recipe!</h1>
+        <div>
+            <a href="/recipes">back to recipes</a>
+            <a href="/user/logout">logout</a>
+        </div>
+        <div class="credflash">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}                    
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+        <div class="center">
+            <form action="/recipes/edit/{{ recipe.id }}" method="post">
+                <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
+                <label> Name:
+                    <input type="text" name="name" value="{{ recipe.name }}">
+                </label>
+                <label>Description:
+                    <textarea name="description" cols="30" rows="10">{{ recipe.description }}</textarea>
+                </label>
+                <label>Instructions:
+                    <textarea name="instructions" id="" cols="30" rows="10">{{ recipe.instructions }}</textarea>
+                </label>
+                <label>Date Cooked/Made:
+                    <input type="date" name="date_made" value="{{ recipe.date_made }}">
+                </label>
+                <label class="marg">Under 30 minutes:
+                    <input type="radio" name="under" value="yes" checked>Yes
+                </label><br>
+                <label class="marg">
+                    <input type="radio" name="under" class="marg" value="no" value>No
+                </label><br>
+                <input type="submit" id="register" value="submit">
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+
+<!-- Format for adding images -->
+<!-- <img src="{{ url_for('static', filename='images/img.png') }}"> -->

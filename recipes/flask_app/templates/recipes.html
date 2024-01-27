@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Above is how we link our style sheet. url_for creates a url based on the static folder, and file name given -->
+    <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+    <!-- Above is how we link our JS file. Make sure that you understand why we use defer -->
+    <title>Recipe Share</title>
+</head>
+<body>
+    <div class="h1">
+        <h1>Welcome, {{ session.first_name }}</h1>
+        <div>
+            <a href="/recipe/create">+ Create</a>
+            <a href="/user/logout">logout</a>
+        </div>
+    </div>
+    <div>
+        <table>
+            <thead>
+                <tr class="border">
+                    <th>Name</th>
+                    <th>Under</th>
+                    <th>Posted By</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for recipe in recipes %}
+                <tr class="border">
+                    <td>{{ recipe.name }}</td>
+                    <td>{{ recipe.under }}</td>
+                    <td>{{ recipe.creator.first_name }}</td>
+                    <td>
+                        <a href="/recipes/{{ recipe.id }}">view recipe</a> 
+                        {% if recipe.creator.id == session.user_id %}
+                        | <a href="/recipe/edit/{{ recipe.id }}">edit</a> | 
+                        <a href="/recipe/delete/{{ recipe.id }}">delete</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+
+<!-- Format for adding images -->
+<!-- <img src="{{ url_for('static', filename='images/img.png') }}"> -->
